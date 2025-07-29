@@ -138,27 +138,31 @@ export const MapboxComponent = forwardRef<MapboxComponentRef, MapboxComponentPro
       onMapClick();
     }
 
-    // Check if clicked on a zoning area
-    if (features && features.length > 0) {
-      const clickedFeature = features.find((f: any) => f.layer.id === 'zoning-fill');
-      if (clickedFeature && clickedFeature.properties) {
-        const parcel: Parcel = {
-          id: clickedFeature.properties.id,
-          address: clickedFeature.properties.address || '',
-          zoneId: clickedFeature.properties.zoneType,
-          geometry: null, // Set to null for zoning areas to show Zoning Details instead of Parcel Details
-          attributes: {
-            OBJECTID: clickedFeature.properties.objectId || 0,
-            ZONE_NAME: clickedFeature.properties.zoneName,
-            ZONE_TYPE: clickedFeature.properties.zoneType,
-            DESCRIPTION: clickedFeature.properties.description,
-            ADDRESS: clickedFeature.properties.address || '',
-          }
-        };
-        onParcelClick(parcel);
+    // Only prevent parcel popup when measurement tool is active
+    // Don't return early so measurement tools can still receive clicks
+    if (!activeMeasurementTool) {
+      // Check if clicked on a zoning area
+      if (features && features.length > 0) {
+        const clickedFeature = features.find((f: any) => f.layer.id === 'zoning-fill');
+        if (clickedFeature && clickedFeature.properties) {
+          const parcel: Parcel = {
+            id: clickedFeature.properties.id,
+            address: clickedFeature.properties.address || '',
+            zoneId: clickedFeature.properties.zoneType,
+            geometry: null, // Set to null for zoning areas to show Zoning Details instead of Parcel Details
+            attributes: {
+              OBJECTID: clickedFeature.properties.objectId || 0,
+              ZONE_NAME: clickedFeature.properties.zoneName,
+              ZONE_TYPE: clickedFeature.properties.zoneType,
+              DESCRIPTION: clickedFeature.properties.description,
+              ADDRESS: clickedFeature.properties.address || '',
+            }
+          };
+          onParcelClick(parcel);
+        }
       }
     }
-  }, [onParcelClick, onMapClick]);
+  }, [onParcelClick, onMapClick, activeMeasurementTool]);
 
   // Create GeoJSON data for zoning areas
   const zoningGeoJSON = {
@@ -272,7 +276,12 @@ export const MapboxComponent = forwardRef<MapboxComponentRef, MapboxComponentPro
               longitude={parcel.geometry.coordinates[0]}
               latitude={parcel.geometry.coordinates[1]}
               anchor="bottom"
-              onClick={() => onParcelClick(parcel)}
+              onClick={() => {
+                // Only prevent parcel popup when measurement tool is active
+                if (!activeMeasurementTool) {
+                  onParcelClick(parcel);
+                }
+              }}
             >
               <div className={`${isHighlighted ? 'w-12 h-12' : 'w-8 h-8'} ${
                 isHighlighted ? 'bg-blue-500 animate-pulse' : 'bg-red-500'
@@ -292,23 +301,26 @@ export const MapboxComponent = forwardRef<MapboxComponentRef, MapboxComponentPro
             latitude={searchResults.latitude}
             anchor="bottom"
             onClick={() => {
-              // Create a mock parcel from single search result
-              const mockParcel: Parcel = {
-                id: `single-search-${searchResults.latitude}-${searchResults.longitude}`,
-                address: searchResults.address || '',
-                zoneId: '',
-                geometry: {
-                  coordinates: [searchResults.longitude, searchResults.latitude]
-                },
-                attributes: {
-                  OBJECTID: 0,
-                  ZONE_NAME: '',
-                  ZONE_TYPE: '',
-                  DESCRIPTION: '',
-                  ADDRESS: searchResults.address || '',
-                }
-              };
-              onParcelClick(mockParcel);
+              // Only prevent parcel popup when measurement tool is active
+              if (!activeMeasurementTool) {
+                // Create a mock parcel from single search result
+                const mockParcel: Parcel = {
+                  id: `single-search-${searchResults.latitude}-${searchResults.longitude}`,
+                  address: searchResults.address || '',
+                  zoneId: '',
+                  geometry: {
+                    coordinates: [searchResults.longitude, searchResults.latitude]
+                  },
+                  attributes: {
+                    OBJECTID: 0,
+                    ZONE_NAME: '',
+                    ZONE_TYPE: '',
+                    DESCRIPTION: '',
+                    ADDRESS: searchResults.address || '',
+                  }
+                };
+                onParcelClick(mockParcel);
+              }
             }}
           >
             <div className={`w-8 h-8 bg-red-500 rounded-full border-4 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300`}>

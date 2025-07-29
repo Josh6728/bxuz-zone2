@@ -17,7 +17,7 @@ export const AISettings: React.FC = () => {
   // Initialize with default values to prevent undefined errors
   const [apiKey, setApiKey] = useState(AZURE_OPENAI_CONFIG.apiKey || '');
   const [model, setModel] = useState(
-    AZURE_OPENAI_CONFIG.modelName || 'o3-mini'
+    AZURE_OPENAI_CONFIG.modelName || 'o4-mini'
   );
   const [endpoint, setEndpoint] = useState(AZURE_OPENAI_CONFIG.endpoint || '');
   const [deployment, setDeployment] = useState(

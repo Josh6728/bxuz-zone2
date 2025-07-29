@@ -26,14 +26,6 @@ const MeasurementPanel: React.FC<MeasurementPanelProps> = ({
           <Ruler size={16} className="text-blue-400" />
           <span className="font-medium text-sm">Measuring Distance</span>
         </div>
-        <button
-          onClick={onClear}
-          className="text-gray-400 hover:text-white transition-colors"
-          title="Stop Measuring"
-          data-testid="stop-measuring-button"
-        >
-          <X size={16} />
-        </button>
       </div>
       
       <div className="flex items-center justify-between">

@@ -72,6 +72,7 @@ export const MapComponent = forwardRef<MapComponentRef, MapComponentProps>(({
   searchResults,
   className = '',
   layerVisibility = {},
+  activeMeasurementTool,
   currentMapStyle = GOOGLE_MAPS_CONFIG.mapStyles.default,
   centerCoordinates = null,
   highlightedMarkerParcel = null,
@@ -373,28 +374,32 @@ export const MapComponent = forwardRef<MapComponentRef, MapComponentProps>(({
               <Polygon
                     key={`${id}-${objectId}`}
                     paths={path}
-                options={{
-                      fillColor: getZoneColor(zoneType),
-                      fillOpacity: 0.5,
-                  strokeColor: '#FFFFFF',
-                      strokeOpacity: 0.8,
-                      strokeWeight: 2,
+                                options={{
+                  fillColor: getZoneColor(zoneType),
+                  fillOpacity: 0.5,
+              strokeColor: '#FFFFFF',
+                  strokeOpacity: 0.8,
+                  strokeWeight: 2,
+                  clickable: !activeMeasurementTool, // Disable polygon clicks when measuring
                 }}
                 onClick={() => {
-                  const mockParcel: Parcel = {
-                        id,
-                        address,
-                        zoneId: zoneType,
-                    geometry: null,
-                    attributes: {
-                          OBJECTID: objectId,
-                          ZONE_NAME: zoneName,
-                          ZONE_TYPE: zoneType,
-                          DESCRIPTION: description,
-                          ADDRESS: address,
-                    },
-                  };
-                  onParcelClick(mockParcel);
+                  // Only prevent parcel popup when measurement tool is active
+                  if (!activeMeasurementTool) {
+                    const mockParcel: Parcel = {
+                          id,
+                          address,
+                          zoneId: zoneType,
+                      geometry: null,
+                      attributes: {
+                            OBJECTID: objectId,
+                            ZONE_NAME: zoneName,
+                            ZONE_TYPE: zoneType,
+                            DESCRIPTION: description,
+                            ADDRESS: address,
+                      },
+                    };
+                    onParcelClick(mockParcel);
+                  }
                 }}
               />
                 );
@@ -414,7 +419,12 @@ export const MapComponent = forwardRef<MapComponentRef, MapComponentProps>(({
                   lat: parcel.geometry.coordinates[1],
                   lng: parcel.geometry.coordinates[0]
                 }}
-                onClick={() => onParcelClick(parcel)}
+                onClick={() => {
+                  // Only prevent parcel popup when measurement tool is active
+                  if (!activeMeasurementTool) {
+                    onParcelClick(parcel);
+                  }
+                }}
                 icon={createMarkerIcon(isParcelHighlighted(parcel))}
                 zIndex={isParcelHighlighted(parcel) ? 1000 : 100}
               />

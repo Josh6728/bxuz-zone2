@@ -70,45 +70,49 @@ export const ParcelPopup: React.FC<ParcelPopupProps> = ({
               <p className="text-white">
                 {parcel.attributes.ZONE_NAME || 'N/A'}
               </p>
-            </div>            <div className="col-span-2">
-              <label className="text-gray-400">
-                Floor Area
-                {_contextQuery && (
-                  <span className="text-xs text-blue-400 ml-1">
-                    (for {_contextQuery})
-                  </span>
-                )}
-              </label>
-              {loadingFloorArea ? (
-                <div className="flex items-center space-x-2 text-gray-300">
-                  <Loader2 className="animate-spin" size={14} />
-                  <span className="text-sm">Analyzing space requirements...</span>
-                </div>
-              ) : (
-                <div className="space-y-1">
-                  <p className="text-white font-semibold">
-                    {floorArea || 'Not calculated'}
-                  </p>
-                  {floorArea && _contextQuery && (
-                    <p className="text-xs text-gray-400">
-                      Estimated for your {_contextQuery} business
-                    </p>
+            </div>            {/* Floor Area - hide for zoning areas */}
+            {!isZoningArea && (
+              <div className="col-span-2">
+                <label className="text-gray-400">
+                  Floor Area
+                  {_contextQuery && (
+                    <span className="text-xs text-blue-400 ml-1">
+                      (for {_contextQuery})
+                    </span>
                   )}
-                </div>
-              )}
+                </label>
+                {loadingFloorArea ? (
+                  <div className="flex items-center space-x-2 text-gray-300">
+                    <Loader2 className="animate-spin" size={14} />
+                    <span className="text-sm">Analyzing space requirements...</span>
+                  </div>
+                ) : (
+                  <div className="space-y-1">
+                    <p className="text-white font-semibold">
+                      {floorArea || 'Not calculated'}
+                    </p>
+                    {floorArea && _contextQuery && (
+                      <p className="text-xs text-gray-400">
+                        Estimated for your {_contextQuery} business
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
+          {/* Book an Appointment Button - hide for zoning areas */}
+          {!isZoningArea && (
+            <div className="pt-4">
+              <button
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors shadow"
+                onClick={() => setIsCalendlyModalOpen(true)}
+              >
+                Book an Appointment
+              </button>
             </div>
-          </div>
-
-          {/* Book an Appointment Button */}
-          <div className="pt-4">
-            <button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition-colors shadow"
-              onClick={() => setIsCalendlyModalOpen(true)}
-            >
-              Book an Appointment
-            </button>
-          </div>
+          )}
 
           <div>
           </div>          {parcel.attributes.regulations && (

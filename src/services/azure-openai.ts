@@ -69,8 +69,6 @@ Important Butuan City landmarks with coordinates for reference:
 - Near Father Saturnino Urios University and Agusan National High School Area: [125.5421062, 8.9464374]
 - Near Saint Joseph Institute Technology Area: [125.5419917, 8.9515949]
 - Bancasi Airport (Butuan Airport, IATA: BXU): [8.951470, 125.478820] 
-- Butuan City Public Market: [8.957238, 125.533775]
-- Libertad Public Market: [8.943920, 125.503480] 
 - Ampayon Public Market: [8.959700, 125.602790]
 - Near Father Saturnino Urios University Morelos Campus Area: [8.956944, 125.533889]
 - Near Caraga State University (Ampayon Campus): [8.956500, 125.596400]
