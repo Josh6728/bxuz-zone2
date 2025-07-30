@@ -202,15 +202,15 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-950">
-      <div className="flex-shrink-0 p-6 pb-0">
+      <div className="flex-shrink-0 p-4 md:p-6 pb-0">
         <div className="max-w-7xl mx-auto">
           {/* Page Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-6">Dashboard</h1>
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6">Dashboard</h1>
             
             {/* Tab Navigation */}
             <div className="border-b border-gray-800">
-              <nav className="flex space-x-8">
+              <nav className="flex space-x-4 md:space-x-8 overflow-x-auto">
                 {[
                   { id: 'overview', label: 'Overview' },
                   { id: 'analytics', label: 'Analytics' },
@@ -219,7 +219,7 @@ export const Dashboard: React.FC = () => {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors whitespace-nowrap ${
                       activeTab === tab.id
                         ? 'border-indigo-500 text-indigo-400'
                         : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-700'
@@ -234,7 +234,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 pt-0">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 pt-0">
         <div className="max-w-7xl mx-auto">
 
         {/* Overview Tab */}

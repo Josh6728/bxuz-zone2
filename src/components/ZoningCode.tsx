@@ -7,9 +7,6 @@ import {
   Edit, 
   History, 
   Info,
-  Save,
-  Calendar,
-  User,
   Plus
 } from 'lucide-react';
 
@@ -300,22 +297,22 @@ export const ZoningCode: React.FC = () => {
       <div className="space-y-6">
         {/* Section Header */}
         <div className="border-b border-gray-800 pb-4">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold text-white">{section.title}</h1>
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+            <h1 className="text-xl md:text-2xl font-bold text-white">{section.title}</h1>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors">
+              <button className="flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm text-gray-300 border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors">
                 <Edit className="w-4 h-4" />
-                Edit
+                <span className="hidden sm:inline">Edit</span>
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
+              <button className="flex items-center gap-2 px-3 md:px-4 py-2 text-xs md:text-sm text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
-                Delete
+                <span className="hidden sm:inline">Delete</span>
               </button>
             </div>
           </div>
-          <div className="flex items-center gap-4 text-sm text-gray-400">
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-gray-400">
             <span>{section.type}</span>
             <span>•</span>
             <span>Last updated {section.lastUpdated}</span>
@@ -324,7 +321,7 @@ export const ZoningCode: React.FC = () => {
 
         {/* Tab Navigation */}
         <div className="border-b border-gray-800">
-          <nav className="flex space-x-8">
+          <nav className="flex space-x-4 md:space-x-8 overflow-x-auto">
             {[
               { id: 'content', label: 'Content', icon: FileText },
               { id: 'metadata', label: 'Metadata', icon: Info },
@@ -335,14 +332,14 @@ export const ZoningCode: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-xs md:text-sm transition-colors whitespace-nowrap ${
                     activeTab === tab.id
                       ? 'border-indigo-500 text-indigo-400'
                       : 'border-transparent text-gray-400 hover:text-gray-300'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
-                  {tab.label}
+                  <span className="hidden sm:inline">{tab.label}</span>
                 </button>
               );
             })}
@@ -431,7 +428,7 @@ export const ZoningCode: React.FC = () => {
   return (
     <div className="flex h-screen bg-gray-950">
       {/* Navigation Sidebar */}
-      <div className="w-80 bg-gray-900 border-r border-gray-800 flex flex-col">
+      <div className="w-80 bg-gray-900 border-r border-gray-800 flex-col hidden md:flex">
         <div className="p-4 border-b border-gray-800">
           <h2 className="text-lg font-semibold text-white mb-4">Zoning Code Structure</h2>
           <div className="relative">
@@ -459,20 +456,37 @@ export const ZoningCode: React.FC = () => {
       <div className="flex-1 flex flex-col bg-gray-950">
         {/* Main Header */}
         <div 
-          className="flex-shrink-0 p-6 pb-4 border-b border-gray-800" 
+          className="flex-shrink-0 p-4 md:p-6 pb-4 border-b border-gray-800" 
           style={{ backgroundColor: 'rgb(3 7 18 / var(--tw-bg-opacity, 1))' }}
         >
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-white">Zoning Code</h1>
-            <button className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            <h1 className="text-xl md:text-3xl font-bold text-white">Zoning Code</h1>
+            <button className="hidden md:flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
               <Plus className="w-4 h-4" />
               Add New Section
             </button>
+            <button className="md:hidden p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
+          
+          {/* Mobile Search - only visible on mobile */}
+          <div className="md:hidden mt-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search zoning code..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6">
           {renderContent()}
         </div>
       </div>

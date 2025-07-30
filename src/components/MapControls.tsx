@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ZoomIn,
   ZoomOut,
@@ -56,10 +56,11 @@ export const MapControls: React.FC<MapControlsProps> = ({
   mapInstance,
   activeMeasurementTool // Add this prop
 }) => {
-  const [isMapToolsVisible, setIsMapToolsVisible] = useState(true);
-  const [activeTab, setActiveTab] = useState<'layers' | 'measure' | 'ai'>(
-    'layers'
-  );
+  const [isMapToolsVisible, setIsMapToolsVisible] = useState(() => {
+    // Check if screen is mobile/tablet (768px or less) - minimize by default on small screens
+    return window.innerWidth > 768;
+  });
+  const [activeTab, setActiveTab] = useState<'layers' | 'measure' | 'ai'>('layers');
   // Remove local activeMeasurementType state - use the prop from App.tsx instead
 
   const [aiAnalysisData] = useState({
@@ -108,6 +109,17 @@ export const MapControls: React.FC<MapControlsProps> = ({
   const toggleMapTools = () => {
     setIsMapToolsVisible(!isMapToolsVisible);
   };
+
+  // Handle window resize to adjust map tools visibility on mobile/tablet
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth <= 768;
+      setIsMapToolsVisible(!isMobile);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleAIAnalyze = () => {
     if (onAIAnalysis) {
@@ -385,10 +397,10 @@ export const MapControls: React.FC<MapControlsProps> = ({
       </div>
 
       {/* Bottom Right Controls */}
-      <div className="absolute bottom-4 right-4 z-10 space-y-2">
+      <div className="absolute bottom-4 right-2 md:right-4 z-10 space-y-2">
         <button
           onClick={onFullscreen}
-          className="bg-gray-800 hover:bg-gray-700 p-2 rounded-md shadow-lg transition-colors block"
+          className="bg-gray-800 hover:bg-gray-700 p-2 rounded-md shadow-lg transition-colors hidden md:block"
           title="Fullscreen"
         >
           <Maximize className="text-white" size={20} />
@@ -396,11 +408,11 @@ export const MapControls: React.FC<MapControlsProps> = ({
       </div>
 
       {/* Map Tools Panel */}
-      <div className="absolute top-1/4 right-4 z-10">
+       <div className="absolute top-60 md:top-1/4 right-2 md:right-4 z-10">
         <div
           className={`bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-all duration-500 ease-in-out ${
             isMapToolsVisible
-              ? 'w-80 h-auto max-h-[70vh]'
+              ? 'w-80 max-w-[calc(100vw-2rem)] h-auto max-h-[54vh]'
               : 'w-12 h-12'
           }`}
         >

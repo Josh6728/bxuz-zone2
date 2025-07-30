@@ -84,7 +84,8 @@ input:focus {
     padding: 0 1rem;
   }
 
-  .absolute.bottom-4.left-4 {
+  .absolute.bottom-4.left-4,
+  .absolute.bottom-4.left-2 {
     bottom: 1rem;
     left: 1rem;
     right: 1rem;
@@ -98,6 +99,65 @@ input:focus {
   .absolute.top-1\/4.right-4 {
     display: none;
   }
+
+  /* MapControls responsive adjustments */
+  .absolute.top-1\/2.-translate-y-1\/2.left-2 {
+    left: 0.5rem;
+  }
+
+  /* Admin panel mobile adjustments */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Ensure proper z-index for mobile menu */
+  .fixed.z-50 {
+    z-index: 50;
+  }
+
+  .fixed.z-40 {
+    z-index: 40;
+  }
+
+  /* Admin content responsive */
+  .grid {
+    gap: 1rem;
+  }
+
+  /* Table responsive adjustments */
+  .table-container {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  /* Card adjustments */
+  .dashboard-card,
+  .card {
+    min-height: auto;
+  }
+
+  /* Form adjustments */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Button adjustments */
+  .btn-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btn-group button {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -108,5 +168,56 @@ input:focus {
   .px-4 {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
+  }
+
+  /* Further reduce padding on very small screens */
+  .p-4 {
+    padding: 0.75rem;
+  }
+
+  .p-6 {
+    padding: 1rem;
+  }
+
+  /* Smaller map controls on mobile */
+  .absolute.top-1\/2.-translate-y-1\/2.left-2 {
+    left: 0.25rem;
+  }
+
+  /* Very small screen adjustments */
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+
+  .text-3xl {
+    font-size: 1.875rem;
+  }
+
+  /* Tab navigation adjustments */
+  .nav-tabs {
+    font-size: 0.875rem;
+  }
+
+  /* Modal adjustments */
+  .modal-content {
+    margin: 1rem;
+    max-height: calc(100vh - 2rem);
+  }
+}
+
+/* Tablet specific adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Tablet sidebar adjustments */
+  .w-72 {
+    width: 16rem;
+  }
+
+  .w-80 {
+    width: 18rem;
+  }
+
+  /* Content padding for tablets */
+  .md\:p-6 {
+    padding: 1.5rem;
   }
 }
